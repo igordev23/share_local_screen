@@ -31,17 +31,23 @@ const createWindow = () => {
     const platformBrowsers = browsers[platform] || []; // Lista de navegadores para o SO atual
 
     // Itera sobre os navegadores possíveis e verifica se o executável existe
+    const encontrou = false;
     for (const browser of platformBrowsers) {
+      if(encontrou) break;
       exec(`command -v "${browser}"`, (err) => {
         if (!err) {
+          encontrou = true;
           callback(browser);
           return;
         }
       });
     }
 
-    // Caso não encontre nenhum, use o navegador padrão do sistema
-    callback('default');
+    if(!encontrou){
+      // Caso não encontre nenhum, use o navegador padrão do sistema
+      callback('default');
+    }
+    
   };
 
   // Encontra o navegador e abre a URL
