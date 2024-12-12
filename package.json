@@ -26,9 +26,9 @@
       "appId": "com.example.myapp",
       "productName": "MyApp",
       "files": [
-        "main.js",
-        "server.js",
-        "public/**/*",
+        "main/main.js",
+        "server/server.js",
+        "frontend/public/**/*",
         "node_modules/**/*"
       ],
       "win": {
