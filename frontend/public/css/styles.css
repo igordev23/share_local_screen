@@ -1,0 +1,11 @@
+#preview {
+    width: 640px;
+    height: 360px;
+    background-color: black;
+}
+
+#videoCanvas {
+    border: 1px solid #000;
+    width: 640px;
+    height: 360px;
+}

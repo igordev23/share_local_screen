@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encerrar Aplicativo</title>
+
+  <style>
+    /* Remove margens e barras de rolagem */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      overflow: hidden; /* Remove barra de rolagem */
+    }
+
+    /* Estilo para a barra superior */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #2563eb;
+      color: white;
+      padding: 10px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .top-bar span {
+      font-weight: bold;
+    }
+
+    .button {
+      display: inline-flex; /* Botões lado a lado */
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Estilo para centralizar a frase e os botões */
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 50px); /* Altura total menos a barra superior */
+      text-align: center;
+    }
+
+    .center-content h3 {
+      font-size: 14px;
+      color: black;
+      font-family: 'Georgia', serif;
+      margin-bottom: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px; /* Espaço entre os botões */
+    }
+
+    .action-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .action-button:hover {
+      background-color: #1e4db7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Barra superior estilo Windows -->
+<div class="top-bar">
+    <span>Aplicativo</span>
+    <div>
+      <!-- Botões lado a lado -->
+      <button id="minimizeApp" class="button">&ndash;</button>
+      <button id="closeApp" class="button">&times;</button>
+    </div>
+</div>
+
+<div class="center-content">
+    <h3>Encerrar o aplicativo?</h3>
+    <div class="button-group">
+        <button id="confirmCloseApp" class="action-button">Sim</button>
+        <button id="cancelCloseApp" class="action-button">Não</button>
+    </div>
+</div>
+
+
+<script src="../js/modal.js"></script> <!-- Importa o script externo -->
+</body>
+</html>

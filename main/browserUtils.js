@@ -1,14 +1,8 @@
-const { app, BrowserWindow } = require('electron');
 const { exec } = require('child_process');
-const path = require('path');
-require('./server.js'); // Garante que o servidor inicie
+const { app } = require('electron');
 
-const createWindow = () => {
-  const url = 'http://localhost:3000/transmitter.html'; // URL do servidor
-
-  // Função para buscar navegadores instalados
+const findBrowserAndOpenURL = (url) => {
   const findBrowser = (callback) => {
-    // Caminhos de navegadores para diferentes sistemas
     const browsers = {
       win32: [
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -27,13 +21,12 @@ const createWindow = () => {
       ]
     };
 
-    const platform = process.platform; // Verifica o sistema operacional
-    const platformBrowsers = browsers[platform] || []; // Lista de navegadores para o SO atual
+    const platform = process.platform;
+    const platformBrowsers = browsers[platform] || [];
+    let encontrou = false;
 
-    // Itera sobre os navegadores possíveis e verifica se o executável existe
-    const encontrou = false;
     for (const browser of platformBrowsers) {
-      if(encontrou) break;
+      if (encontrou) break;
       exec(`command -v "${browser}"`, (err) => {
         if (!err) {
           encontrou = true;
@@ -43,20 +36,16 @@ const createWindow = () => {
       });
     }
 
-    if(!encontrou){
-      // Caso não encontre nenhum, use o navegador padrão do sistema
+    if (!encontrou) {
       callback('default');
     }
-    
   };
 
-  // Encontra o navegador e abre a URL
   findBrowser((browserPath) => {
     if (browserPath === 'default') {
-      // Abre com o navegador padrão do sistema
       const command = process.platform === 'win32' ? `start ${url}`
-                      : process.platform === 'darwin' ? `open ${url}`
-                      : `xdg-open ${url}`;
+                    : process.platform === 'darwin' ? `open ${url}`
+                    : `xdg-open ${url}`;
       exec(command, (err) => {
         if (err) {
           console.error('Erro ao abrir o navegador padrão:', err);
@@ -64,7 +53,6 @@ const createWindow = () => {
         }
       });
     } else {
-      // Abre com o navegador encontrado
       exec(`"${browserPath}" --app=${url}`, (err) => {
         if (err) {
           console.error(`Erro ao abrir o navegador ${browserPath}:`, err);
@@ -75,18 +63,4 @@ const createWindow = () => {
   });
 };
 
-// Evento para iniciar o aplicativo
-app.whenReady().then(() => {
-  createWindow();
-
-  app.on('activate', () => {
-    // Em sistemas macOS, recria a janela no app quando ativada
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
-});
-
-// Finaliza o app ao fechar todas as janelas
-app.on('window-all-closed', () => {
-  // Em sistemas não macOS, fecha o aplicativo ao fechar todas as janelas
-  if (process.platform !== 'darwin') app.quit();
-});
+module.exports = { findBrowserAndOpenURL };

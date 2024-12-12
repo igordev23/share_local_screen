@@ -1,48 +1,49 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "dist": "electron-builder"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.21.1",
-    "simple-peer": "^9.11.1",
-    "uuid": "^11.0.3",
-    "ws": "^8.18.0"
-  },
-  "devDependencies": {
-    "electron": "^33.2.1",
-    "electron-builder": "^24.13.3"
-  },
-  "build": {
-    "appId": "com.example.myapp",
-    "productName": "MyApp",
-    "files": [
-      "main.js",
-      "server.js",
-      "public/**/*",
-      "node_modules/**/*"
-    ],
-    "win": {
-      "target": "nsis",
-      "icon": "icon.ico"
+    "name": "backend",
+    "version": "1.0.0",
+    "main": "main/main.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "electron .",
+      "dist": "electron-builder"
     },
-    "mac": {
-      "target": ["dmg", "zip"],
-      "icon": "icon.icns"
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.21.1",
+      "simple-peer": "^9.11.1",
+      "uuid": "^11.0.3",
+      "ws": "^8.18.0"
     },
-    "linux": {
-      "target": ["AppImage", "deb"],
-      "icon": "icon.png",
-      "category": "Utility"
+    "devDependencies": {
+      "electron": "^33.2.1",
+      "electron-builder": "^24.13.3"
+    },
+    "build": {
+      "appId": "com.example.myapp",
+      "productName": "MyApp",
+      "files": [
+        "main.js",
+        "server.js",
+        "public/**/*",
+        "node_modules/**/*"
+      ],
+      "win": {
+        "target": "nsis",
+        "icon": "icon.ico"
+      },
+      "mac": {
+        "target": ["dmg", "zip"],
+        "icon": "icon.icns"
+      },
+      "linux": {
+        "target": ["AppImage", "deb"],
+        "icon": "icon.png",
+        "category": "Utility"
+      }
     }
   }
-}
+  
