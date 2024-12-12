@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Encerrar Aplicativo</title>
-  <link rel="stylesheet" href="../css/modal.css">
 
-  <style>
     /* Remove margens e barras de rolagem */
     body {
       margin: 0;
@@ -85,29 +77,4 @@
     .action-button:hover {
       background-color: #1e4db7;
     }
-  </style>
-</head>
-<body>
-
-<!-- Barra superior estilo Windows -->
-<div class="top-bar">
-    <span>Aplicativo</span>
-    <div>
-      <!-- Botões lado a lado -->
-      <button id="minimizeApp" class="button">&ndash;</button>
-      <button id="closeApp" class="button">&times;</button>
-    </div>
-</div>
-
-<div class="center-content">
-    <h3>Encerrar o aplicativo?</h3>
-    <div class="button-group">
-        <button id="confirmCloseApp" class="action-button">Sim</button>
-        <button id="cancelCloseApp" class="action-button">Não</button>
-    </div>
-</div>
-
-
-<script src="../js/modal.js"></script> <!-- Importa o script externo -->
-</body>
-</html>
+  
