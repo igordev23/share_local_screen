@@ -25,7 +25,7 @@
     },
     "build": {
         "appId": "com.example.myapp",
-        "productName": "MyApp",
+        "productName": "Share_Local_Screen",
         "files": [
             
             "main/main.js",
