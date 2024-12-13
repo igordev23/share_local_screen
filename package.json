@@ -3,47 +3,57 @@
     "version": "1.0.0",
     "main": "main/main.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "electron .",
-      "dist": "electron-builder"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "dist": "electron-builder"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "description": "",
     "dependencies": {
-      "cors": "^2.8.5",
-      "express": "^4.21.1",
-      "simple-peer": "^9.11.1",
-      "uuid": "^11.0.3",
-      "ws": "^8.18.0"
+        "cors": "^2.8.5",
+        "express": "^4.21.1",
+        "live-server": "^1.2.2",
+        "simple-peer": "^9.11.1",
+        "uuid": "^11.0.3",
+        "ws": "^8.18.0"
     },
     "devDependencies": {
-      "electron": "^33.2.1",
-      "electron-builder": "^24.13.3"
+        "electron": "^33.2.1",
+        "electron-builder": "^24.13.3"
     },
     "build": {
-      "appId": "com.example.myapp",
-      "productName": "MyApp",
-      "files": [
-        "main/main.js",
-        "server/server.js",
-        "frontend/public/**/*",
-        "node_modules/**/*"
-      ],
-      "win": {
-        "target": "nsis",
-        "icon": "icon.ico"
-      },
-      "mac": {
-        "target": ["dmg", "zip"],
-        "icon": "icon.icns"
-      },
-      "linux": {
-        "target": ["AppImage", "deb"],
-        "icon": "icon.png",
-        "category": "Utility"
-      }
+        "appId": "com.example.myapp",
+        "productName": "MyApp",
+        "files": [
+            "node_modules/.bin/live-server",
+            "main/main.js",
+            "main/browserUtils.js",
+            "server/**/*",
+            "server/server.js",
+            "frontend/public/**/*",
+            "node_modules/**/*"
+            
+        ],
+        "win": {
+            "target": "nsis",
+            "icon": "icon.ico"
+        },
+        "mac": {
+            "target": [
+                "dmg",
+                "zip"
+            ],
+            "icon": "icon.icns"
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "icon": "icon.png",
+            "category": "Utility"
+        }
     }
-  }
-  
+}

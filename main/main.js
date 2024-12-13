@@ -64,8 +64,11 @@ const isPortInUse = (port, callback) => {
 const startLiveServer = (callback) => {
   console.log('Iniciando o Live Server...');
   let liveServerPort = 5500; // Porta padrão
+   // Caminho para o binário do live-server dentro do node_modules
+   const liveServerCommand = path.join(__dirname, '..', 'node_modules', '.bin', 'live-server');
+
   const liveServerProcess = exec(
-    `npx live-server ./frontend/public --port=${liveServerPort} --open=html/transmitter.html`,
+    `${liveServerCommand} ./frontend/public --port=${liveServerPort} --open=html/transmitter.html`,
     (err, stdout, stderr) => {
       if (err) {
         console.error('Erro ao iniciar o Live Server:', err);
