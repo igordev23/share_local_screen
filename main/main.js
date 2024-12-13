@@ -60,94 +60,19 @@ const isPortInUse = (port, callback) => {
     .listen(port);
 };
 
-// Função para iniciar o Live Server e obter a porta usada
-const startLiveServer = (callback) => {
-  console.log('Iniciando o Live Server...');
-  let liveServerPort = 5500; // Porta padrão
-   // Caminho para o binário do live-server dentro do node_modules
-   const liveServerCommand = path.join(__dirname, '..', 'node_modules', '.bin', 'live-server');
-
-  const liveServerProcess = exec(
-    `${liveServerCommand} ./frontend/public --port=${liveServerPort} --open=html/transmitter.html`,
-    (err, stdout, stderr) => {
-      if (err) {
-        console.error('Erro ao iniciar o Live Server:', err);
-        return;
-      }
-    console.log('Live Server iniciado.');
-    console.log(stdout);
-  });
-
-  liveServerProcess.stdout.on('data', (data) => {
-    console.log(data.toString());
-    // Detecta a porta se o Live Server escolher uma porta diferente
-    const portMatch = data.toString().match(/Serving \"[^\"]*\" at http:\/\/127\.0\.0\.1:(\\d+)/);
-    if (portMatch) {
-      liveServerPort = portMatch[1];
-      console.log(`Live Server está usando a porta ${liveServerPort}`);
-    }
-  });
-
-  liveServerProcess.stderr.on('data', (data) => {
-    console.error(data.toString());
-  });
-
-  // Espera um pequeno atraso para garantir que o servidor está iniciado
-  setTimeout(() => callback(liveServerPort), 2000);
-};
-
-// Função para aguardar o Live Server estar ativo
-const waitForServer = (port, callback, attempts = 10) => {
-  const interval = 500; // Intervalo entre tentativas (ms)
-  let tries = 0;
-
-  const check = () => {
-    if (tries >= attempts) {
-      console.error(`Live Server não respondeu após ${attempts} tentativas.`);
-      return;
-    }
-
-    tries += 1;
-    console.log(`Tentativa ${tries}: verificando se o servidor está ativo na porta ${port}...`);
-
-    isPortInUse(port, (inUse) => {
-      if (inUse) {
-        console.log(`Servidor ativo na porta ${port}.`);
-        callback();
-      } else {
-        setTimeout(check, interval);
-      }
-    });
-  };
-
-  check();
-};
-
 // Cria a janela e abre o navegador
 const createWindow = () => {
-  const defaultPort = 5500;
+  // URL local para o arquivo transmitter.html servido pelo servidor
+  const fileUrl = `http://localhost:3000/transmitter`;
+  console.log(`Abrindo o arquivo HTML via servidor local: ${fileUrl}`);
 
-  // Verifica se a porta do Live Server está em uso
-  isPortInUse(defaultPort, (inUse) => {
-    if (!inUse) {
-      console.log(`Live Server não está em execução. Iniciando...`);
-      startLiveServer((liveServerPort) => {
-        createModal(); // Abre o modal após iniciar o navegador
-         waitForServer(liveServerPort, () => {
-          
-        const url = `http://127.0.0.1:${liveServerPort}/frontend/public/html/transmitter.html`;
-        findBrowserAndOpenURL(url); // Abre o navegador com a porta detectada
-        createModal(); // Abre o modal após iniciar o navegador
-      });
-    });
-    } else {
-      const url = `http://127.0.0.1:${defaultPort}/frontend/public/html/transmitter.html`;
-      console.log(`Live Server já está em execução na porta ${defaultPort}.`);
-      findBrowserAndOpenURL(url); // Abre o navegador diretamente
-      createModal(); // Abre o modal após iniciar o navegador
-    }
-  });
-}
+  // Abre o navegador configurado com a URL do servidor local
+  findBrowserAndOpenURL(fileUrl);
+
+  // Cria o modal (se necessário)
+  createModal();
+};
+
 
 // Evento disparado quando o Electron está pronto
 app.whenReady().then(() => {

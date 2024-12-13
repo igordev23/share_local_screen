@@ -27,7 +27,7 @@
         "appId": "com.example.myapp",
         "productName": "MyApp",
         "files": [
-            "node_modules/.bin/live-server",
+            
             "main/main.js",
             "main/browserUtils.js",
             "server/**/*",

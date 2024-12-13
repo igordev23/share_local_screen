@@ -7,6 +7,10 @@ configureRoutes(app);
 // Configura o CORS para todas as rotas HTTP
 // Redireciona para o arquivo HTML principal
 // Rota estática para os arquivos HTML
+// Redireciona para o arquivo transmitter.html
+app.get('/transmitter', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'public', 'html', 'transmitter.html'));
+});
 
 
 
