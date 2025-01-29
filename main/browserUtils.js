@@ -23,22 +23,24 @@ const findBrowserAndOpenURL = (url) => {
 
     const platform = process.platform;
     const platformBrowsers = browsers[platform] || [];
-    let encontrou = false;
-
-    for (const browser of platformBrowsers) {
-      if (encontrou) break;
-      exec(`command -v "${browser}"`, (err) => {
-        if (!err) {
-          encontrou = true;
+    
+    const checkBrowser = (index) => {
+      if (index >= platformBrowsers.length) {
+        callback('default');
+        return;
+      }
+      
+      const browser = platformBrowsers[index];
+      exec(`[ -x "${browser}" ] && echo "found"`, (err, stdout) => {
+        if (!err && stdout.trim() === 'found') {
           callback(browser);
-          return;
+        } else {
+          checkBrowser(index + 1);
         }
       });
-    }
-
-    if (!encontrou) {
-      callback('default');
-    }
+    };
+    
+    checkBrowser(0);
   };
 
   findBrowser((browserPath) => {
