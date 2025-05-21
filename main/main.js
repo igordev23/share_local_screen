@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { findBrowserAndOpenURL } = require('./browserUtils.js');
 const path = require('path'); // Para manipular caminhos de arquivos
 const { exec } = require('child_process');
@@ -67,7 +67,8 @@ const createWindow = () => {
   console.log(`Abrindo o arquivo HTML via servidor local: ${fileUrl}`);
 
   // Abre o navegador configurado com a URL do servidor local
-  findBrowserAndOpenURL(fileUrl);
+  shell.openExternal(fileUrl);
+
 
   // Cria o modal (se necessário)
   createModal();
