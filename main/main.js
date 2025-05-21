@@ -1,49 +1,57 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
-const path = require('path'); // Para manipular caminhos de arquivos
-const { exec } = require('child_process');
-const net = require('net'); // Para verificar se a porta está em uso
+const path = require('path');
+const net = require('net');
 
-let server; // Variável para armazenar o servidor
-let modalWindow; // Janela modal
-let mainWindow;
+let server;
+let configWindow = null;
 
-// Inicializa o servidor e mantém a referência
+// Inicializa o servidor
 const startServer = () => {
   server = require('../server/server.js');
   console.log('Servidor iniciado.');
 };
 
-// Encerra o servidor de forma limpa
+// Encerra o servidor
 const stopServer = () => {
   if (server && server.close) {
     server.close(() => {
       console.log('Servidor encerrado.');
-      process.exit(0); // Simula o Ctrl+C encerrando o processo
+      process.exit(0);
     });
   } else {
-    process.exit(0); // Garante encerramento mesmo se `server.close` não existir
+    process.exit(0);
   }
 };
 
-// Cria o modal com o botão "Encerrar Aplicativo"
-const createModal = () => {
-  modalWindow = new BrowserWindow({
-    width: 300,
-    height: 150,
-    resizable: false,
-    frame: false, // Remove a moldura da janela
-    alwaysOnTop: true, // Mantém a janela sempre no topo
+// Cria a janela e carrega config.html
+const createConfigWindow = () => {
+  configWindow = new BrowserWindow({
+    width: 350,
+    height: 300,
+    resizable: true,
     webPreferences: {
-      nodeIntegration: true, // Necessário para usar IPC
+      nodeIntegration: true,
       contextIsolation: false,
     },
   });
 
-  // Carrega o modal.html com caminho absoluto
-  modalWindow.loadFile(path.join(__dirname, '..', 'frontend', 'public', 'html', 'modal.html'));
+  configWindow.setMenuBarVisibility(false);
+
+  const configPath = path.join(__dirname, 'config.html');
+  configWindow.loadFile(configPath);
+
+  // Quando a janela terminar de carregar, abre o navegador
+  configWindow.webContents.on('did-finish-load', () => {
+    openLocalURL();
+  });
+
+  configWindow.on('closed', () => {
+    configWindow = null;
+    stopServer();
+  });
 };
 
-// Função para verificar se a porta está em uso
+// Verifica se a porta está em uso
 const isPortInUse = (port, callback) => {
   const server = net.createServer()
     .once('error', (err) => {
@@ -59,55 +67,45 @@ const isPortInUse = (port, callback) => {
     .listen(port);
 };
 
-// Cria a janela e abre o navegador
-const createWindow = () => {
-  // URL local para o arquivo transmitter.html servido pelo servidor
+// Abre a URL local no navegador padrão
+const openLocalURL = () => {
   const fileUrl = `http://localhost:3000/transmitter`;
   console.log(`Abrindo o arquivo HTML via servidor local: ${fileUrl}`);
-
-  // Abre o navegador configurado com a URL do servidor local
   shell.openExternal(fileUrl);
-
-
-  // Cria o modal (se necessário)
-  createModal();
 };
 
-
-// Evento disparado quando o Electron está pronto
+// Evento principal
 app.whenReady().then(() => {
-  startServer(); // Inicia o servidor
-  createWindow();
+  startServer();
+  createConfigWindow();
 
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createConfigWindow();
   });
 });
 
-// Evento disparado ao fechar todas as janelas
+// Fecha todas as janelas
 app.on('window-all-closed', () => {
   stopServer();
 });
 
-// Intercepta SIGINT (Ctrl+C) para encerrar o servidor
+// Ctrl+C no terminal
 process.on('SIGINT', () => {
   console.log('Encerrando o servidor devido a Ctrl+C...');
   stopServer();
 });
 
-// Manipuladores para minimizar e fechar
+// IPC para minimizar ou sair
 ipcMain.on('app:minimize', () => {
-  if (modalWindow) {
-    modalWindow.minimize(); // Minimiza o modal
+  if (configWindow) {
+    configWindow.minimize();
   }
 });
 
-// Intercepta o evento do botão "Encerrar Aplicativo"
 ipcMain.on('app:quit', () => {
-  stopServer(); // Encerra o servidor e o aplicativo
+  stopServer();
 });
 
-// Evento para encerramento explícito do processo
 app.on('before-quit', () => {
   stopServer();
 });
