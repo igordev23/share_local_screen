@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
-const { findBrowserAndOpenURL } = require('./browserUtils.js');
 const path = require('path'); // Para manipular caminhos de arquivos
 const { exec } = require('child_process');
 const net = require('net'); // Para verificar se a porta está em uso
